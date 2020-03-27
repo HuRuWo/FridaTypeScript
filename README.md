@@ -12,7 +12,7 @@
 
 5. 编写index.ts 代码即可，体验良好
 
-6. 运行脚本 frida -U -f com.ss.android.ugc.aweme --no-pause -l _agent.js  可以边修改边运行，无需重启app
+6. 运行脚本 frida -U -f com.xx.xxx --no-pause -l _agent.js  可以边修改边运行，无需重启app
 
 相关截图 
 
