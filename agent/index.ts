@@ -1,22 +1,26 @@
-import { log } from "./logger";
 
-const header = Memory.alloc(16);
-header
-    .writeU32(0xdeadbeef).add(4)
-    .writeU32(0xd00ff00d).add(4)
-    .writeU64(uint64("0x1122334455667788"));
-log(hexdump(header.readByteArray(16) as ArrayBuffer, { ansi: true }));
+function frida_Java() {
 
-Process.getModuleByName("libSystem.B.dylib")
-    .enumerateExports()
-    .slice(0, 16)
-    .forEach((exp, index) => {
-        log(`export ${index}: ${exp.name}`);
-    });
+    Java.perform(function () {
 
-Interceptor.attach(Module.getExportByName(null, "open"), {
-    onEnter(args) {
-        const path = args[0].readUtf8String();
-        log(`open() path="${path}"`);
-    }
-});
+        if(Java.available){
+            console.log("JVM加载成功")
+
+            Java.perform(function () {
+                 Java.use("")
+            })
+
+
+            let api_h = Java.use("com.ss.android.ugc.aweme.feed.api.FeedApi");
+            api_h.a .overload('int', 'long', 'long', 'int', 'java.lang.Integer', 'java.lang.String', 'int', 'int', 'java.lang.String', 'java.lang.String', 'java.lang.String', 'long', 'com.ss.android.ugc.aweme.feed.cache.e').implementation = function () {
+                console.log("hook成功")
+            }
+        }else{
+            //未能正常加载JAVA VM
+            console.log("失败");
+        }
+    })
+
+}
+
+setImmediate(frida_Java,0);
